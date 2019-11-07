@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { ActivityIndicator, Image, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Image, StyleSheet, View, Dimensions } from 'react-native';
+import ShimmerPlaceHolder from 'react-native-shimmer-placeholder';
 
 const styles = StyleSheet.create({
   centered: {
@@ -26,14 +27,16 @@ export const createImageProgress = ImageComponent =>
       renderError: PropTypes.func,
       source: PropTypes.any,
       style: PropTypes.any,
-      imageStyle: PropTypes.any,
+      imageStyle: PropTypes.object,
       threshold: PropTypes.number,
+      useShimmer: PropTypes.bool,
     };
 
     static defaultProps = {
       indicatorContainerStyle: styles.centered,
       errorContainerStyle: styles.centered,
       threshold: 50,
+      useShimmer: false,
     };
 
     static prefetch = Image.prefetch;
@@ -167,6 +170,7 @@ export const createImageProgress = ImageComponent =>
         style,
         threshold,
         imageStyle,
+        useShimmer,
         ...props
       } = this.props;
 
@@ -203,9 +207,9 @@ export const createImageProgress = ImageComponent =>
         if (renderIndicator) {
           indicatorElement = renderIndicator(progress, !loading || !progress);
         } else {
-          const IndicatorComponent =
-            typeof indicator === 'function' ? indicator : DefaultIndicator;
+          const IndicatorComponent = DefaultIndicator;
           indicatorElement = (
+            useShimmer ? <ShimmerPlaceHolder colorShimmer={['#DFE7EB', 'white', '#DFE7EB']} isInteraction={false} style={{ backgroundColor: 'transparent', position: 'absolute', left: 0, width: '100%', height: '100%'}} autoRun /> :
             <IndicatorComponent
               progress={progress}
               indeterminate={!loading || !progress}
@@ -214,12 +218,13 @@ export const createImageProgress = ImageComponent =>
           );
         }
         indicatorElement = (
-          <View style={indicatorContainerStyle}>{indicatorElement}</View>
+           <View style={indicatorContainerStyle}>{indicatorElement}</View>
         );
       }
 
       return (
         <View style={style} ref={this.handleRef}>
+          {indicatorElement}
           <ImageComponent
             {...props}
             key={sourceKey}
@@ -231,7 +236,6 @@ export const createImageProgress = ImageComponent =>
             source={source}
             style={[StyleSheet.absoluteFill, imageStyle]}
           />
-          {indicatorElement}
           {children}
         </View>
       );
