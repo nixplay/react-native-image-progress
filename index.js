@@ -171,6 +171,7 @@ export const createImageProgress = ImageComponent =>
         threshold,
         imageStyle,
         useShimmer,
+        transform,
         ...props
       } = this.props;
 
@@ -209,7 +210,15 @@ export const createImageProgress = ImageComponent =>
         } else {
           const IndicatorComponent = DefaultIndicator;
           indicatorElement = (
-            useShimmer ? <ShimmerPlaceHolder colorShimmer={['#DFE7EB', 'white', '#DFE7EB']} isInteraction={false} style={{ backgroundColor: 'transparent', position: 'absolute', left: 0, width: '100%', height: '100%'}} autoRun /> :
+            useShimmer ? <ShimmerPlaceHolder colorShimmer={['#DFE7EB', 'white', '#DFE7EB']} isInteraction={false}
+            style={{
+              backgroundColor: 'transparent',
+              position: 'absolute',
+              left: 0,
+              width: '100%',
+              height: '100%'
+              transform,
+            }} autoRun /> :
             <IndicatorComponent
               progress={progress}
               indeterminate={!loading || !progress}
