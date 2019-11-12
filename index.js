@@ -211,14 +211,14 @@ export const createImageProgress = ImageComponent =>
           const IndicatorComponent = DefaultIndicator;
           indicatorElement = (
             useShimmer ? <ShimmerPlaceHolder colorShimmer={['#DFE7EB', 'white', '#DFE7EB']} isInteraction={false}
-            style={{
+            style={[{
               backgroundColor: 'transparent',
               position: 'absolute',
               left: 0,
               width: '100%',
               height: '100%'
-              transform,
-            }} autoRun /> :
+            },
+            transform]} autoRun /> :
             <IndicatorComponent
               progress={progress}
               indeterminate={!loading || !progress}
