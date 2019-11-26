@@ -210,7 +210,7 @@ export const createImageProgress = ImageComponent =>
         } else {
           const IndicatorComponent = DefaultIndicator;
           indicatorElement = (
-            useShimmer ? <ShimmerPlaceHolder colorShimmer={['#DFE7EB', 'white', '#DFE7EB']} isInteraction={false}
+            (useShimmer && !loading) ? <ShimmerPlaceHolder colorShimmer={['#DFE7EB', 'white', '#DFE7EB']} isInteraction={false}
             style={[{
               backgroundColor: 'transparent',
               position: 'absolute',
